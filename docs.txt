@@ -35,6 +35,7 @@ Chapter 2 – Baby steps with React
 2.6 Application structure
 2.7 Quiz
 Summary
+Chapter 3 - Introduction to JSX
 
 
 Chapter 1 - Meeting React
