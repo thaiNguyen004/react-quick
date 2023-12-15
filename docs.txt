@@ -36,6 +36,31 @@ Chapter 2 – Baby steps with React
 2.7 Quiz
 Summary
 Chapter 3 - Introduction to JSX
+3.1 Why do we use JSX?
+3.1.1 Before and after JSX
+3.1.2 Keeping HTML and JavaScript together
+3.2 Understanding JSX
+3.2.1 Creating elements with JSX
+3.2.2 Using JSX with custom components
+3.2.3 Multiline JSX objects
+3.2.4 Outputting variables in JSX
+3.2.6 Branching in JSX
+3.2.7 Comments in JSX
+3.2.8 Lists of JSX objects
+3.2.9 Fragments in JSX
+3.3 How to transpile JSX
+3.4 React and JSX gotchas
+3.4.1 Self-closing elements
+3.4.2 Special characters
+3.4.3 String conversion
+3.4.4 The style attribute
+3.4.5 Reserved names: class and for
+3.4.6 Multiword attributes
+3.4.7 Boolean attribute values
+3.4.8 Whitespace
+3.4.9 data- attributes
+3.5 Quiz
+Summary
 
 
 Chapter 1 - Meeting React
@@ -1191,4 +1216,1132 @@ createreact-app. Điều này giúp bạn nhanh chóng bắt đầu với một 
  Các ví dụ trong cuốn sách này sẽ tuân theo một cấu trúc tệp rất đơn giản.
 
 Chapter 3 - Introduction to JSX
+This chapter covers
+ Understanding JSX and its benefits
+ Using JSX to implement custom components faster and easier
+ React and JSX gotchas
+JavaScript XML (JSX) là một phần mở rộng cú pháp cho JavaScript. Điều này làm cho React trở nên xuất sắc, nhưng cũng là một trong những yếu tố gây tranh cãi khi React được giới thiệu vào ngày xưa.
+Dưới đây là một ví dụ về việc sử dụng JSX trong JavaScript:
+const link = <a href="//react.dev">React</a>;
+JSX là phần tử xuất hiện giữa dấu ngoặc nhọn: `<a href="//react.dev">React</a>`. Nó không phải là một chuỗi, không phải là một biểu thức mẫu, và không phải là HTML. Đó là một đối tượng JavaScript được tạo ra bằng cú pháp mở rộng gọi là JSX. Nó giúp tạo ra các phần tử React nhanh hơn và gọn gàng hơn, cũng như làm cho việc đọc các React elements trở nên dễ dàng hơn. Ưu điểm sau cùng ít nhất cũng quan trọng như ưu điểm trước.
+JSX chỉ dành cho các nhà phát triển. Một mình nó không làm gì cả để cải thiện hoặc tăng tốc ứng dụng web. JSX được chuyển đổi thành mã code giống như khi không sử dụng JSX.
+
+Mặc dù JSX không phải là một yêu cầu, nhưng nó được chấp nhận phổ biến như là cách duy nhất để viết các React component. Bạn có thể thấy một số team không sử dụng JSX, nhưng chúng chiếm một phần nhỏ rất lớn.
+Trong chương này, chúng ta sẽ đào sâu hơn vào những lí do sử dụng JSX ban đầu, sau đó thảo luận về tất cả các phần khác nhau của việc áp dụng JSX trong thực tế, và cuối cùng, đề cập đến một số mẹo mà bạn cần chú ý khi sử dụng JSX. Trong quá trình này, chúng ta cũng sẽ thảo luận ngắn gọn về việc chuyển đổi JSX thành JavaScript, gọi là transpiling, mà bạn có thể nhớ từ chương 2. May mắn thay, transpiling không phải là điều bạn cần lo lắng quá nhiều.
+LƯU Ý: Mã nguồn cho các ví dụ trong chương này có sẵn tại https://rq2e.com/ch03. Nhưng như bạn đã học ở chương 2, bạn có thể khởi tạo tất cả các ví dụ trực tiếp từ dòng lệnh bằng một lệnh duy nhất.
+3.1 Why do we use JSX?
+
+JSX là JavaScript extension cung cấp syntactic sugar (tức là làm cho việc nhập liệu dễ dàng hơn, nhưng về cơ bản là tương đương chức năng) cho việc gọi hàm function calls và object construction, đặc biệt là thay thế cho React.createElement(). Nó có thể trông giống một template engine hoặc HTML, nhưng thực tế không phải như vậy. JSX tạo ra các React elements trong khi vẫn cho phép bạn tận dụng toàn bộ sức mạnh của JavaScript. JSX là một cách tuyệt vời để viết các React component và bao gồm những lợi ích sau:
+
+1. Trải nghiệm phát triển tốt hơn —  Mã nguồn dễ đọc hơn vì nó trở nên duyên dáng hơn, nhờ vào cú pháp giống XML giúp biểu diễn cấu trúc kêu gọi lồng nhau một cách tốt hơn.
+
+2. Thông báo lỗi tốt hơn — React giả định rằng bạn sử dụng JSX và báo cáo các thông báo lỗi hữu ích như bạn thực sự sử dụng nó. Nếu không, thông báo lỗi sẽ hơi đưa lạc, đề cập đến một cú pháp khác mà bạn không sử dụng.
+
+3. Faster code — Khi chuyển đổi JSX thành JavaScript, trình biên dịch tối ưu hóa mã nguồn ngay lập tức, làm cho JavaScript kết quả chạy nhanh hơn so với việc bạn nhập liệu bằng tay.
+
+4. Thành viên nhóm làm việc hiệu quả hơn — Những nhà phát triển không chuyên nghiệp (ví dụ: nhà thiết kế) có thể dễ dàng sửa đổi mã nguồn vì JSX trông giống như HTML, mà họ đã quen thuộc.
+
+5. Ít lỗi cú pháp hơn — Những nhà phát triển phải gõ ít mã hơn, điều này có nghĩa là họ mắc ít lỗi hơn.
+
+Mặc dù JSX không bắt buộc cho React, nhưng nó tích hợp một cách tốt và chúng ta khuyến khích sử dụng nó, như cũng được khuyến nghị bởi những người sáng tạo React. Bạn sẽ gặp khó khăn để tìm thấy bất kỳ nhóm nào trong thế giới thực sự sử dụng React mà không sử dụng JSX. Mặc dù chúng ta không thể khẳng định rằng tất cả các dự án React gần đây trên thế giới đều sử dụng JSX, nhưng chúng ta rất tự tin rằng hầu hết họ đều sử dụng nó.
+3.1.1 Before and after JSX
+
+Để minh họa sự duyên dáng của JSX, dưới đây là đoạn mã snippet để tạo một element với một số custom components , sau đó là một link:
+const element = <main>
+<Title>Welcome</Title>
+<Carousel images={6} />
+<a href="/blog">Go to the blog</a>
+</main>;
+Đoạn mã trên là hoàn toàn giống với đoạn mã dưới đây được triển khai mà không sử dụng JSX:
+
+const element = React.createElement(
+  'main',
+  null,
+  React.createElement(Title, null, 'Welcome'),
+  React.createElement(Carousel, {images: 6}),
+  React.createElement('a', {href: "/blog"}, 'Go to the blog'),
+);
+Chúng ta có thể đồng thuận rằng phiên bản JSX dễ hiểu hơn rất nhiều khi nhìn nhanh. Nó giống như HTML, rất dễ đọc, và một phần giống với đầu ra HTML sẽ được hiển thị, ngoại trừ các thành phần tùy chỉnh, tất nhiên.
+3.1.2 Keeping HTML and JavaScript together
+Đơn giản mà nói, JSX là một ngôn ngữ nhỏ small language với cú pháp giống XML. Nó đã thay đổi cách mọi người viết các (UI) components. Trước đây, các nhà phát triển viết HTML và mã JavaScript cho controllers và views theo kiểu MVC, nhảy giữa các tệp khác nhau. Điều này xuất phát từ ngày đầu tiên của việc phát triển web. Phương pháp này phục vụ web tốt khi nó chỉ bao gồm HTML tĩnh, một ít CSS và một chút JavaScript để làm cho văn bản nhấp nháy.
+Tuy nhiên, hiện nay chúng ta xây dựng UI tương tác cao, và JavaScript và HTML liên kết chặt chẽ để triển khai các chức năng khác nhau. Điều này vi phạm nguyên tắc về việc tách biệt các loại concerns (separation of concerns), nguyên tắc cơ bản trong hầu hết software development. Nguyên tắc principle này là về việc tách biệt các mục không liên quan, nhưng giữ các mục liên quan lại với nhau. Nếu bạn muốn tuân theo nguyên tắc này, bạn nên phân chia mã của mình break your code down sao cho mỗi bit trong sự cô lập thực hiện một và chỉ một concern, và những "bits" này sau đó có thể được sử dụng trong các kết nối khác nhau different connections. Nếu split your template và your view logic, nhưng chúng chỉ hoạt động nếu kết hợp lại, thì bạn đã tách một cách không cần thiết hai mục liên quan đến nhau.
+
+React khắc phục vấn đề này bằng cách tổng hợp UI description và logic JavaScript; và với JSX, mã nguồn trông giống như HTML và dễ đọc và viết hơn. Nếu không có lý do gì khác, chúng ta sẽ sử dụng React và JSX cho cách tiếp cận mới này trong việc viết UI.
+
+JSX được biên dịch bởi các công cụ chuyển đổi khác nhau thành ECMAScript chuẩn (xem hình 3.1). Có thể bạn biết rằng JavaScript cũng là ECMAScript, nhưng JSX không phải là một phần của quy định và không có bất kỳ ngữ nghĩa cụ thể nào. Điều này có nghĩa là nếu bạn cố gắng biên dịch JavaScript với JSX nhúng trong một trình biên dịch JavaScript thông thường mà không biên dịch JSX trước, bạn sẽ gặp lỗi. JSX không phải là JavaScript hợp lệ một mình và không thể được biên dịch trực tiếp bởi trình biên dịch JavaScript.
+
+LƯU Ý: Chúng tôi gọi nó là biên dịch thay vì biên soạn vì chúng tôi chuyển đổi nó từ một ngôn ngữ nguồn (JSX) sang một ngôn ngữ nguồn khác (JavaScript). JavaScript kết quả sau đó, lần lượt, sẽ được thông dịch bởi một trình biên dịch "thực sự" chạy mã. Việc biên dịch chỉ là chuyển đổi cú pháp thay vì thông dịch mã.
+
+Khi trình duyệt của bạn thực thi ứng dụng React của bạn, trình duyệt của bạn sẽ chỉ nhìn thấy các câu lệnh React.createElement cần thiết để tạo ra cấu trúc mà bạn cần. Chỉ có trong trình soạn thảo mà JSX tồn tại. Trình biên dịch chuyển đổi các tệp của bạn chứa JSX thành JavaScript thuần với các React.createElement() rải rác khắp nơi để giúp bạn tiết kiệm công sức.
+
+Bạn có thể tự hỏi tại sao bạn nên bận tâm với JSX chút. Xem xét cách mã JSX trông ban đầu đối với những nhà phát triển mới, không ngạc nhiên khi một số nhà phát triển bị tắt hứng thú bởi công nghệ tuyệt vời này. Ví dụ, đoạn mã JavaScript sau có JSX giữa đó, kết hợp các dấu ngoặc nhọn ở nơi mà chúng thường không xuất hiện:
+const title = <h1>Hello</h1>;
+Nhưng điều làm cho JSX tuyệt vời là các phím tắt đến React.createElement(NAME, ...). Thay vì viết lại cuộc gọi hàm đó nhiều lần, bạn có thể sử dụng <NAME />. Và như đã đề cập trước đó, bạn càng gõ ít, càng ít lỗi bạn mắc phải. Với JSX, trải nghiệm của nhà phát triển là mối quan tâm chính, tức là làm cho việc tạo ra các thành phần và ứng dụng nhanh chóng hơn và ít lỗi hơn.
+Lý do chính để sử dụng JSX là nhiều người thấy rằng mã có dấu ngoặc nhọn (<>), dễ đọc hơn so với mã chứa nhiều câu lệnh React.createElement(). Khi bạn đã quen với việc nghĩ về <NAME /> không phải là XML mà là một định danh cho mã JavaScript, bạn sẽ vượt qua sự lạ lẫm ban đầu của cú pháp JSX. Biết và sử dụng JSX có thể tạo ra sự khác biệt lớn khi bạn phát triển các React component và sau đó là các ứng dụng sử dụng React.
+
+Như đã đề cập trước đó, JSX cần được biên dịch thành JavaScript thông thường trước khi trình duyệt có thể thực thi mã. Trong hầu hết các cài đặt, bạn sẽ không cần lo lắng về điều này, nhưng chúng ta sẽ thảo luận về một số công cụ biên dịch trong phần 3.3 nếu bạn cần tự thực hiện nó. Bây giờ, hãy đào sâu để hiểu rõ hơn về JSX.
+3.2 Understanding JSX
+
+Hãy khám phá cách làm việc với JSX. Bạn có thể đọc phần này và lưu nó vào đánh dấu cho tài liệu tham khảo của bạn, hoặc (nếu bạn muốn chạy một số ví dụ mã trên máy tính của mình) bắt đầu làm việc với các ví dụ sử dụng các mẫu create-react-app (CRA) được liệt kê ở khắp mọi nơi. Với CRA, bạn có JSX được biên dịch "miễn phí," nghĩa là bạn không cần lo lắng về việc tự thiết lập nó.
+
+3.2.1 Creating elements with JSX
+Tạo các React elements bằng JSX rất đơn giản. Hãy xem bảng 3.1 để xem một số ví dụ về mã JavaScript mà bạn đã sử dụng trước đó và phiên bản tương đương của nó trong JSX.
+
+ 
+
+Trong mã JSX, các thuộc tính và giá trị của chúng (ví dụ, size={6}) xuất phát từ đối số thứ hai của hàm createElement(). Chúng ta sẽ tập trung vào làm việc với các thuộc tính sau trong chương sau.
+Hiện tại, hãy xem một ví dụ về các JSX elements without properties. Dưới đây là một ví dụ từ chương trước được nâng cấp sang cấu trúc được khuyến khích recommended structure bằng cách sử dụng một App component tùy chỉnh. Nó chỉ là một phần tử h1 với văn bản "Hello world!", trong đó từ "world" được đặt chếch, như thể hiện dưới đây.
+
+Listing 3.2 Emphasized greeting with JSX
+
+import React, { Component } from 'react';
+class App extends Component {
+   render() {
+     return <h1>Hello <em>World</em>!</h1>;
+   }
+}
+export default App;
+
+
+Bạn có thể thậm chí lưu trữ các objects được tạo với JSX syntax trong các biến vì JSX chỉ là một cải tiến cú pháp của React.createElement(). Ví dụ này lưu trữ tham chiếu đến element được tạo ra trong một biến trước khi trả về nó:
+const title = <h1>Hello <em>World</em>!</h1>;
+return title;
+Điều này hoàn toàn giống với dòng 4 trong đoạn mã 3.2; nó chỉ sử dụng một biến phụ trước khi trả về.
+
+3.2.2 Using JSX with custom components
+
+Các ví dụ trước đã sử dụng thẻ JSX <h1>, đó cũng là tên thẻ HTML tiêu chuẩn. Khi làm việc với các component tùy chỉnh, bạn áp dụng cú pháp tương tự. Sự khác biệt duy nhất là component class name phải bắt đầu bằng một chữ cái viết hoa, như trong <Title />. Đoạn mã 3.3 cho thấy một phiên bản phức tạp hơn của ứng dụng ba links của chúng ta từ chương 2, được viết lại bằng JSX. Trong trường hợp này, bạn tạo một class component mới và sử dụng JSX để tạo một phần tử từ nó. Nhớ ví dụ Link của chương trước không? Đoạn mã trông như sau mà không có JSX (đã chuyển đổi sang cấu trúc App được khuyến nghị).
+Listing 3.3 Three identical links without JSX
+import React, { Component, Fragment } from 'react';
+class Link extends Component {
+    render() {
+        return React.createElement(
+            'p',
+            null,
+            React.createElement(
+                'a',
+                { href: '//react.dev' },
+                'Read more about React',
+            ),
+        );
+    }
+}
+class App extends Component {
+    render() {
+        const link1 = React.createElement(Link);
+        const link2 = React.createElement(Link);
+        const link3 = React.createElement(Link);
+        const group = React.createElement(Fragment, null, link1, link2, link3);
+        return group;
+    }
+}
+export default App;
+
+Sử dụng JSX, đoạn mã này trở thành Listing 3.4. Nếu bạn chạy nó trong trình duyệt, bạn sẽ nhận được kết quả giống như chúng ta đã thấy trong hình 2.13 ở chương 2, và chúng tôi hiển thị lại trong hình 3.2.
+
+Listing 3.4 Three identical links with JSX
+import React, { Component, Fragment } from "react";
+class Link extends React.Component {
+  render() {
+    return (
+      <p>
+        <a href="//react.dev">Read more about React</a>
+      </p>
+    );
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <Fragment>
+        <Link/>
+        <Link/>
+        <Link/>
+      </Fragment>
+    );
+  }
+}
+export default App;
+
+ 
+
+Repository: rq03-jsx-links
+$ npx create-react-app rq03-jsx-links --template rq03-jsx-links
+https://rq2e.com/rq03-jsx-links
+
+3.2.3 Multiline JSX objects
+
+Có thể bạn đã chú ý đến dấu ngoặc đơn quanh đối tượng JSX nhiều dòng multiline JSX được trả về trong listing 3.4. Bạn phải bao gồm những dấu ngoặc đơn này nếu bạn bắt đầu một đối tượng JSX nhiều dòng trên một dòng riêng sau một câu lệnh return, ví dụ, như sau. Đây là cách để tạo đối tượng JSX nhiều dòng khi không bắt đầu trên cùng một dòng:
+
+```jsx
+return (
+  <main>
+    <h1>Hello world</h1>
+  </main>
+);
+```
+
+Hoặc, bạn có thể bắt đầu root element của mình trên cùng một dòng với câu lệnh return và tránh sử dụng dấu ngoặc đơn. Ví dụ, điều này cũng là hợp lệ:
+
+```jsx
+return <main>
+  <h1>Hello world</h1>
+</main>;
+```
+
+Một nhược điểm của cách tiếp cận thứ hai này là giảm khả năng nhìn thấy thẻ mở <main>. Nó có thể dễ bị bỏ qua trong mã nguồn. Quyết định là ở bạn. Chúng tôi sẽ sử dụng phong cách trước đây của việc sử dụng dấu ngoặc đơn xung quanh nội dung JSX nhiều dòng để duy trì tính nhất quán. Lưu ý rằng điều tương tự cũng áp dụng cho bất kỳ việc sử dụng nào của đối tượng JSX nhiều dòng khác, ví dụ, khi bạn lưu chúng trong một biến. Chúng tôi cũng sẽ sử dụng dấu ngoặc đơn ở đó:
+
+```jsx
+const message = (
+  <main>
+    <h1>Hello world</h1>
+  </main>
+);
+```
+3.2.4 Outputting variables in JSX
+Khi bạn xây dựng các components, bạn muốn chúng đủ thông minh để thay đổi giao diện dựa trên một số mã. Ví dụ, nếu một date component sử dụng ngày và giờ hiện tại, thay vì chỉ một giá trị được đặt cứng.
+Khi làm việc với React chỉ bằng JavaScript, bạn phải sử dụng chuỗi template literals (tức là dấu backticks) để kết hợp chuỗi với biến - hoặc, tệ hơn, là nối chuỗi. Ví dụ, để sử dụng một biến trong ngữ cảnh chuỗi trong một thành phần DateTimeNow mà không có JSX, bạn sẽ viết mã như sau:
+
+class DateTimeNow extends React.Component {
+  render() {
+    const dateTimenow = new Date().toLocaleString();
+    return React.createElement(
+      "span", 
+      null,
+      `Current date and time is ${dateTimenow}`
+    )
+  }
+}
+
+Trong JSX, bạn có thể sử dụng cú pháp ngoặc nhọn {} để đầu ra biến động, giảm độ phức tạp của mã đáng kể:
+
+class DateTimeNowJSX extends React.Component {
+  render() {
+    const dateTimeNow = new Date().toLocaleString();
+    return <span>Current date and time is {dateTimeNow}</span>
+  }
+}
+
+Nếu bạn tham chiếu đến một biến là một phần tử React (tùy chọn được tạo bằng JSX), bạn có thể chèn trực tiếp phần JSX đó trong ngữ cảnh hiện tại:
+
+const now = <date>{dateTimeNow}</date>
+const message = <p>Tody is {now}</p>
+
+Điều này tương đương với việc chèn trực tiếp phần tử:
+const message = <p>Tody is <date>{dateTimeNow}</date></p>
+
+Các biến được chèn cũng có thể là các thuộc tính, không chỉ là các biến được định nghĩa cục bộ:
+<p>Hello {this.props.userName}, today is {dateTimeNow}.</p>
+Bạn cũng có thể gọi các phương thức của component mà bạn tạo. Điều này là một thực hành phổ biến để cô lập các phần của chức năng isolate bits of functionality, như được thể hiện trong đoạn mã tiếp theo.
+Listing 3.5 ButtonList using a method
+class ButtonList extends Component {
+  getButton(text) {
+    return (
+      <button disabled={this.props.disabled}>{text}</button>
+    );
+  }
+
+  render() {
+    return (
+      <aside>
+        {this.getButton("Up")}
+        {this.getButton("Down")}
+      </aside>
+    );
+  }
+}
+
+Ví dụ trong danh sách 3.5 được đơn giản hóa quá mức, tất nhiên, vì hầu hết thời gian, bạn có thể sử dụng một thành phần phụ  extra component cho một trường hợp sử dụng như vậy. Tuy nhiên, có những tình huống nơi các phương thức của thành phần thực sự hữu ích. Mục đích của ví dụ này là chỉ ra rằng bạn có thể gọi trực tiếp các phương thức của component trong JSX. Ví dụ, bạn có thể thực thi các biểu thức JavaScript tùy ý bên trong dấu ngoặc nhọn, như làm định dạng ngày trực tiếp:
+<p>Today is {new Date(Date.now()).toLocaleTimeString()}.</p>
+Bây giờ chúng ta hãy viết lại lời chào được nhấn mạnh của chúng ta để lưu trữ từ in nghiêng trong một biến trước khi xuất ra, trong đoạn mã tiếp theo. Sau đó, chúng ta sẽ tiếp tục thảo luận về cách bạn làm việc với các thuộc tính trong JSX ở phần tiếp theo.
+Listing 3.6 Emphasized greeting using JSX and a variable
+import { Component } from 'react';
+class App extends Component {
+  render() {
+    const world = <em>World</em>;
+    return <h1>Hello {world}!</h1>;
+  }
+}
+export default App;
+
+3.2.5 Working with properties in JSX
+
+Chúng ta đã đề cập đến chủ đề này trước đó, khi giới thiệu về JSX. Element properties được định nghĩa bằng cú pháp attributes. Nói cách khác, bạn sử dụng cú pháp key1=value1 key2=value2… bên trong thẻ JSX để định nghĩa cả HTML attributes và React component properties. Điều này tương tự attribute syntax trong HTML/XML.
+Nói một cách khác, nếu bạn cần truyền properties, hãy viết chúng trong JSX như bạn đã làm trong HTML thông thường. Bạn render standard HTML attributes bằng cách đặt các element properties (đã thảo luận trong phần 2.3) trên một React element với một thẻ HTML. Ví dụ, đoạn mã sau đặt một thuộc tính HTML tiêu chuẩn href cho phần tử mô phỏng `<a>`:
+return <a href="/ /react.dev">Let's do React!</a>;
+
+Bạn sử dụng cùng một phương pháp để setting property trên các custom component. Nếu chúng ta có Link component từ chương trước, chúng ta có thể sử dụng nó trong JSX như sau:
+return <Link url="//react.dev" framework="React" />;
+
+Việc sử dụng giá trị cứng cho thuộc tính không linh hoạt lắm, tất nhiên. Nếu bạn muốn tái sử dụng thành phần Link, thì href phải thay đổi để phản ánh một địa chỉ khác mỗi lần. Điều này được gọi là đặt giá trị động so với việc đặt cứng. Vì vậy, tiếp theo, chúng ta sẽ đi một bước xa hơn và xem xét một thành phần có thể sử dụng giá trị được tạo động cho thuộc tính. Những giá trị đó có thể đến từ các thuộc tính của thành phần (this.props). Sau đó, mọi thứ sẽ dễ dàng. Bạn chỉ cần sử dụng dấu ngoặc nhọn ({}) bên trong dấu ngoặc nhọn (<>) để truyền giá trị động của thuộc tính cho các phần tử.
+
+Ví dụ, giả sử bạn đang xây dựng một component sẽ được sử dụng để liên kết đến tài khoản người dùng. Bạn cần một số thuộc tính trên thẻ `<a>`, nhưng href và title phải khác nhau cho mỗi component và không được đặt cứng. Hãy tạo một thành phần động ProfileLink mà render một liên kết với các thuộc tính url và label cho href và title, tương ứng. Bạn truyền các thuộc tính vào `<a>` bằng cách sử dụng {}:
+
+class ProfileLink extends Component {
+  render() {
+    return (
+      <a
+        href={this.props.url} 
+        title={this.props.label} 
+        target="_blank">
+      </a>
+    );
+  }
+}
+
+Giá trị của property đến từ đâu? Chúng được định nghĩa khi ProfileLink được tạo ra - tức là, trong component  tạo ra ProfileLink, còn được gọi là cha của nó. Ví dụ, đây là cách giá trị cho url và label được truyền khi một thể hiện ProfileLink được tạo ra, dẫn đến việc render thẻ `<a>` với những giá trị đó:
+
+<ProfileLink url="/users/johnny" label="Profile for Johnny"/>
+
+Từ chương trước, bạn sẽ nhớ rằng khi render các phần tử tiêu chuẩn (`<h>`, `<p>`, `<div>`, `<a>`, vv.), React sẽ render mọi thuộc tính ngay cả khi chúng không có bất kỳ ý nghĩa nghĩa nào trong HTML. Điều này không chỉ đối với JSX, đó chỉ là hành vi mặc định của React.
+Nếu bạn có một object với các properties mà bạn muốn render trên một element, bạn có thể render từng cái một như sau:
+return (
+  <Post
+    id={post.id}
+    title={post.title}
+    content={post.content}
+  />
+);
+Điều này hoạt động tốt và là một giải pháp an toàn. Tuy nhiên, nếu bạn có một object với các values và bạn muốn render tất cả chúng, bạn có thể làm như vậy bằng cách sử dụng toán tử spread như sau:
+return <Post {...post} />;
+Lưu ý rằng điều này sẽ render tất cả các thuộc tính của đối tượng post, bất kể xem nó có ý nghĩa hay không. Chỉ sử dụng quy trình này khi bạn chắc chắn rằng đối tượng chỉ chứa các thuộc tính bạn cần hoặc ít nhất chắc chắn rằng bất kỳ thuộc tính dư thừa nào cũng bị bỏ qua. Điều này sẽ cho phép bạn cũng có thể render tất cả các properties được truyền vào một component cho một element khác bên trong thành phần đó bằng cách sử dụng toán tử spread:
+return <input value={this.value} {...this.props} />;
+Tuy nhiên, điều này có chút nguy hiểm, vì nó cho phép thành phần cha truyền vào các giá trị tùy ý có thể ghi đè lên bất kỳ giá trị nào bạn truyền vào nó. Nếu `this.props` chứa một thuộc tính giá trị, nó sẽ ghi đè lên thuộc tính giá trị mà bạn đã đặt trong thành phần trước khi sử dụng spread. Hãy cẩn thận khi sử dụng toán tử spread và đặc biệt là khi sử dụng spread cho tất cả các props được truyền vào một thành phần. Chúng ta sẽ quay lại với toán tử spread trong chương kế tiếp và bao quát một số ví dụ thường gặp khác về cách sử dụng nó.
+THE SPECIAL PROPERTY: CHILDREN
+
+Nếu bạn nhớ lại chương trước đó, chúng ta giới thiệu về thuộc tính đặc biệt `children`, mà chỉ giống như một thuộc tính bên trong một custom component, không nhìn thấy từ bên ngoài. Khi sử dụng JSX, thuộc tính `children` trở nên gọn gàng hơn để sử dụng. Trong ví dụ với các child nodes ở chương 2, nó trông giống như cấu trúc cây được hiển thị trong hình 3.3.
+
+ 
+Hãy triển khai lại ví dụ này bằng JSX. Chúng ta biết tất cả những điều cần làm, vì vậy hãy tiến hành và thực hiện chúng.
+import { Fragment, Component } from "react";
+
+class Link extends Component {
+  render() {
+    return (
+      <p>
+        <a href={this.props.url}>
+          {this.props.children}
+        </a>
+      </p>
+    );
+  }
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Fragment>
+        <Link url="//react.dev">
+          <strong>React</strong>
+        </Link>
+        <Link url="//vuejs.org">Vue</Link>
+        <Link url="//angular.io">Angular</Link>
+      </Fragment>
+    );
+  }
+}
+
+export default App;
+
+Repository: rq03-children
+$ npx create-react-app rq03-children --template rq03-children
+https://rq2e.com/rq03-children
+Sự khác biệt giữa việc sử dụng thuộc tính và nút con trở nên rõ ràng hơn nhiều. Chúng ta có thể đã truyền nội dung liên kết dưới dạng một thuộc tính, nhưng nó sẽ trông khá tệ. Nếu chúng ta sử dụng cách tiếp cận thuộc tính thông thường, nó sẽ trông như sau:
+<Link
+  url="//react.dev"
+  content={<strong>React</strong>}
+/>
+Nhưng khi chúng ta sử dụng cách tiếp cận child node, nó trở thành:
+<Link url="//react.dev">
+  <strong>React</strong>
+</Link>
+Chắc chắn rằng chúng ta biết chúng ta ưa thích cách tiếp cận sau.
+3.2.6 Branching in JSX
+
+Branching nhánh luôn quan trọng trong lập trình. Ví dụ, nếu người dùng đã đăng nhập, hiển thị thông tin tài khoản của họ; ngược lại, hiển thị một form đăng nhập. Bởi vì JSX chỉ là JavaScript, chúng ta có thể sử dụng các cấu trúc hoàn toàn giống nhau như chúng ta thường làm trong lập trình thông thường regular coding để tạo rẽ nhánh create branching trong các component của chúng ta. Dù vậy, đã xuất hiện một số mô hình mà hầu hết các nhà phát triển tuân theo về cách sử dụng branching trong các React component sử dụng JSX:
+
+- Sử dụng return sớm để rendering thị gì cả.
+- Sử dụng toán tử ba ngôi để rendering các phần tử thay thế.
+- Sử dụng toán tử AND logic (&&) để rendering các phần tử tùy chọn.
+- Sử dụng object maps để rendering giữa nhiều elements khác nhau.
+- Sử dụng các extra components cho các rẽ nhánh phức tạp hơn.
+Chúng ta sẽ đi qua từng điều này trong các phần nhỏ tiếp theo để giải thích cách chúng ta sử dụng rẽ nhánh trong JSX và các custom React components của chúng ta.
+
+USING EARLY RETURN FOR RENDERING NOTHING
+Hãy tưởng tượng bạn có một component mà chỉ hiển thị nội dung liên quan khi một điều kiện cụ thể là đúng. 
+Ví dụ, hãy tưởng tượng một component đếm ngược mà chỉ hiển thị giá trị khi số giây còn lại lớn hơn 0.
+Nếu một thành phần không hiển thị gì cả, chúng ta có thể đơn giản là trả về `null` từ component. Tuy nhiên, để tối ưu hóa các component của chúng ta, chúng ta cố gắng thực hiện điều này càng sớm càng tốt để ngắn mạch thực hiện. Mục đích là chia nhánh ra thành trường hợp đơn giản nhất càng nhanh càng tốt để tránh thực hiện các tính toán thêm hoặc tạo các đối tượng JSX khi chúng ta không cần chúng.
+Chúng ta có thể tạo Countdown component của mình như sau:
+class Countdown extends Component {
+  render() {
+    const seconds = this.props.remaining % 60;
+    const minutes = Math.floor(this.props.remaining / 60);
+    const message = <p>{minutes}:{seconds}</p>;
+    if (seconds > 0 || minutes > 0) {
+      return message;
+    } else {
+      return null;
+    }
+  }
+}
+Không có gì inherently sai với cách tiếp cận này nó hoạt động và hoàn toàn chức năng. Nhưng bạn sẽ thấy nhiều nhà phát triển sử dụng cách tiếp cận của việc dừng sớm nếu component không hiển thị gì cả. Chúng ta có thể phát hiện trường hợp này của việc không hiển thị trước khi tính số giây và phút và trước khi tạo đối tượng JSX:
+
+class Countdown extends Component {
+  render() {
+    if (this.props.remaining === 0) {
+      return null;
+    }
+    const seconds = this.props.remaining % 60;
+    const minutes = Math.floor(this.props.remaining / 60);
+    return <p>{minutes}:{seconds}</p>;
+  }
+}
+Ở đây, chúng ta cũng sử dụng việc khi chúng ta trả về từ bên trong một khối if, chúng ta không cần một khối else. Khối else là ngầm định trong việc rằng bất kỳ điều gì sau khối if chỉ được thăm nếu điều kiện thất bại.
+
+USING TERNARY FOR LỰA CHỌN THAY THẾ ALTERNATIVES
+Một trường hợp rất phổ biến trong các React components là hiển thị các elements khác nhau dựa trên regular if/else statement block. Ví dụ, hãy tưởng tượng một giỏ hàng trong đó chúng ta muốn hiển thị các mục nếu có bất kỳ mục nào, nhưng hiển thị một thông báo nếu không có mục nào trong giỏ hàng.
+Chúng ta có thể thực hiện điều này trong JSX bằng cách sử dụng một biến và gán các giá trị khác nhau thông qua một khối câu lệnh if/else thông thường. Tuy nhiên, đây là một cách hơi dài dòng, và trong React, thì việc sử dụng toán tử ba ngôi là phổ biến hơn. Nơi mà câu lệnh if/else là một câu lệnh, toán tử ba ngôi là một biểu thức và có thể được sử dụng trực tiếp trong JSX như sau:
+<p>User is {this.props.isOnline ? 'Online' : 'Offline'}</p>
+
+Bằng cách sử dụng điều này, chúng ta có thể tạo shopping cart component của mình từ trước:
+
+class ShoppingCart extends Component {
+  render() {
+    return (
+      <aside>
+        <h1>Shopping cart</h1>
+        {this.props.items.length === 0 ? (
+          <p>Your cart is empty. Go buy something!</p>
+        ) : (
+          <CartItems items={this.props.items} />
+        )}
+      </aside>
+    );
+  }
+}
+USING LOGICAL OPERATORS FOR OPTIONAL RENDERING
+Một mô hình phổ biến khác là cần lựa chọn việc hiển thị một phần tử tùy thuộc vào điều kiện đúng, nhưng không hiển thị gì nếu điều kiện là sai. Ví dụ, chúng ta muốn hiển thị một biểu tượng đánh dấu (checkmark) bên cạnh tên người dùng nếu người dùng là người được xác minh, nhưng không hiển thị gì cho những người không được xác minh. Chúng ta có thể làm điều này bằng cách sử dụng toán tử logic AND và sự thật rằng các toán tử logic ngắn mạch (short-circuit) bằng cách trả về ngay sau khi sự đúng đắn của biểu thức toàn bộ được biết đến. Do đó, khi thực hiện a && b, JavaScript sẽ trả về a nếu a là giả định (falsy) hoặc b nếu a là đúng đắn (truthy). Nếu a là đúng đắn, không quan trọng b là gì; b sẽ được trả về bất kể. Kết hợp điều này với việc React hiển thị giá trị false như chuỗi rỗng (thêm về điều này sau).
+Truthiness
+Trong JavaScript, một giá trị truthy tương đương với true khi được đánh giá là Boolean. Ví dụ, trong một câu lệnh if:
+if (someVariable) {
+  // Điều này xảy ra nếu và chỉ nếu someVariable là truthy.
+}
+Giá trị là truthy nếu nó không phải là falsy. Đó là định nghĩa chính thức, không đùa. Chỉ có sáu giá trị falsy:
+- false
+- 0
+- "" (chuỗi rỗng)
+- null
+- undefined
+- NaN (không phải là số)
+Chúng ta có thể sử dụng điều này để render các phần tử có điều kiện, bằng cách làm cho toán tử AND logic trả về false nếu người dùng không được xác minh và một phần tử React nếu người dùng đã được xác minh:
+
+
+class UserName extends Component {
+  render() {
+    return (
+      <p>
+        {this.props.username}
+        {this.props.isVerified && <Checkmark />}
+      </p>
+    );
+  }
+}
+Bạn sẽ gặp mẫu này thường xuyên trong các React component, vì vậy đây là một điều cần biết
+USING OBJECTS FOR SWITCHING
+Cho đến nay, chúng ta đã xử lý trường hợp render một phần tử hoặc không render gì cả, hoặc render một phần tử hoặc phần tử khác, nhưng nếu chúng ta muốn render hơn hai loại phần tử dựa trên một điều kiện thì sao? Đối với tình huống này, chúng ta muốn render một icon dựa trên trạng thái của bài đăng blog. Nếu bài đăng ở trạng thái nháp, chúng ta sẽ render một biểu tượng nháp. Nếu bài đăng ở trạng thái đã xuất bản, chúng ta sẽ render một biểu tượng đã xuất bản. Và nếu bài đăng ở bất kỳ trạng thái khác nào (chúng ta đã biết đó chỉ là trạng thái đã xóa), chúng ta sẽ render một biểu tượng thùng rác.
+Chúng ta có thể lồng các toán tử ba ngôi để kiểm tra trạng thái có phải là "draft" không; sau đó, nếu không phải, kiểm tra xem trạng thái có phải là "published" không; và nếu không phải, chúng ta giả định rằng nó phải đã bị xóa:
+class PostStatus extends Component {
+  render() {
+    return this.props.status === "draft" ?
+      <DraftIcon /> :
+    this.props.status === "published" ?
+      <PublishedIcon /> :
+      <TrashIcon />;
+  }
+}
+Điều này có thể hoạt động, nhưng không phải là cách làm đẹp. Một lựa chọn khác là sử dụng câu lệnh switch và đơn giản là trả về các giá trị khác nhau trong mỗi trường hợp. Tuy nhiên, một cách tiếp cận mô tả hơn ở đây là sử dụng một đối tượng với các thuộc tính cho các trường hợp khác nhau giải quyết các kết quả khác nhau:
+
+const status2icon = {
+  draft: <DraftIcon />,
+  published: <PublishedIcon />,
+  deleted: <TrashIcon />,
+};
+class PostStatus extends Component {
+  render() {
+    return status2icon[this.props.status];
+  }
+}
+Đó là khá ngắn gọn và gọn gàng, phải không? Tuy nhiên, lưu ý rằng điều này không xử lý tình huống trong đó trạng thái không thuộc một trong những điều đó. Trước đây, component sẽ hiển thị biểu tượng trash nếu trạng thái không phải là draft hoặc published, nhưng bây giờ, nó chỉ sẽ hiển thị trash icon nếu trạng thái là deleted.
+
+Để xử lý trường hợp khi trạng thái là bất kỳ giá trị không mong muốn nào khác, chúng ta cần thêm một phép toán OR logic ở cuối để nếu việc lập chỉ mục đối tượng không giải quyết gì cả, chúng ta vẫn hiển thị một giải pháp thay thế. Hãy nói chúng ta chỉ hiển thị biểu tượng rác trong mọi trường hợp không biết:
+class PostStatus extends Component {
+  render() {
+    return status2icon[this.props.status] || status2icon.deleted;
+  }
+}
+Mẫu này có lẽ ít phổ biến hơn trong React, nhưng bạn vẫn có thể thấy nó trong những trường hợp đơn giản như những trường hợp chúng ta đã thảo luận.
+USING EXTRA COMPONENTS FOR COMPLEX BRANCHING
+Các tình huống trước chỉ đề cập đến một số trường hợp chia nhánh đơn giản. Làm thế nào nếu component của bạn có logic phức tạp hơn? 
+Hãy xem xét một ví dụ với một shopping cart component như trước đây với một số buttons ở phía dưới. Chúng ta phải triển khai business logic sau đây theo yêu cầu của khách hàng:
+- Nếu người dùng đã đăng nhập, chỉ hiển thị nút Checkout.
+- Nếu người dùng chưa đăng nhập, hiển thị nút Login cùng với nút Checkout as Guest.
+- Nếu có bất kỳ sản phẩm nào hết hàng hoặc giỏ hàng trống, nút Checkout hoặc Checkout as Guest sẽ bị tắt.
+- Nếu người dùng đã đăng nhập nhưng chưa thêm thẻ tín dụng, hiển thị nút Add Credit Card thay thế.
+- Nếu người dùng đã đăng nhập, có thẻ tín dụng và đã nhập địa chỉ, hiển thị nút One-Click Buy kế bên nút Checkout. Nút này sẽ bị tắt theo cùng logic như nút Checkout.
+Bây giờ, hãy triển khai tất cả điều này với những mẹo bạn đã học cho đến nay.
+
+import { Component, Fragment } from "react";
+class ShoppingCart extends Component {
+  render() {
+    const hasItems = this.props.items.length > 0;
+    const isLoggedIn = this.props.user !== null;
+    const hasCreditCard = isLoggedIn && this.props.user.creditcard !== null;
+    const hasAddress = isLoggedIn && this.props.user.address !== null;
+    const isAvailable = this.props.items.every((item) => !item.outOfStock);
+    return isLoggedIn ? (
+      hasCreditCard ? (
+        <Fragment>
+          <button disabled={!hasItems || !isAvailable}>
+            Checkout
+          </button>
+          {hasAddress && (
+            <button disabled={!hasItems || !isAvailable}>
+              One-click buy
+            </button>
+          )}
+        </Fragment>
+      ) : (
+        <button>Add credit card</button>
+      )
+    ) : (
+      <Fragment>
+        <button>Login</button>
+        <button disabled={!hasItems || !isAvailable}>
+          Checkout as guest
+        </button>
+      </Fragment>
+    )
+  }
+}
+
+class App extends Component {
+  render() {
+    const items = [1, 2, 3];
+    const user = {creditcard: null, address: true};
+    return <ShoppingCart items={items} user={user}></ShoppingCart>
+  }
+}
+
+export default App;
+
+Repository: rq03-cart-single
+$ npx create-react-app rq03-cart-single --template rq03-cart-single
+https://rq2e.com/rq03-cart-single
+
+Được rồi, có vẻ như đã bao gồm mọi thứ. Tuy nhiên, điều này đang trở nên phức tạp với các điều kiện lồng nhau và thuộc tính lặp lại. Đối với trường hợp phức tạp như vậy, thường là một ý tưởng tốt để chia thành nhiều thành phần xử lý từng trường hợp khác nhau một cách riêng biệt.
+Ở đây, chúng ta có thể tạo các components mới như <UserButtons /> và <GuestButtons />. Ở cấp độ cao nhất, chúng ta có thể chọn sử dụng components nào trong số chúng và sau đó thêm các điều kiện và điều kiện cần thiết bên trong từng components này.
+
+Listing 3.9 Simplified multicomponent shopping cart
+import { Component, Fragment } from "react";
+
+class UserButtons extends Component {
+  render() {
+    const hasCreditCard = this.props.user.creditcard !== null;
+    const hasAddress = this.props.user.address !== null;
+    const disable = !this.props.canCheckout;
+    return hasCreditCard ? (
+      <Fragment>
+        <button disabled={disable}>
+          Checkout
+        </button>
+        {hasAddress && (
+          <button disabled={disable}>One-click buy</button>
+        )}
+      </Fragment>
+    ) : (
+      <button>Add credit card</button>
+    )
+  }
+}
+
+class GuestButtons extends Component {
+  render() {
+    return (
+      <Fragment>
+        <button>Login</button>
+        <button disabled={!this.props.canCheckout}>
+          Checkout as guest
+        </button>
+      </Fragment>
+    );
+  }
+}
+
+class ShoppingCart extends Component {
+  render() {
+    const hasItems = this.props.items.length > 0;
+    const isLoggedIn = this.props.users !== null;
+    const isAvailable = this.props.items.every((item) => !item.outOfStock);
+    const canCheckout = hasItems && isAvailable;
+    return isLoggedIn ? (
+      <UserButtons user={this.props.user} canCheckout={canCheckout}/>
+    ) : (
+      <GuestButtons canCheckout={canCheckout}/>
+    )
+  }
+}
+
+class App extends Component {
+  render() {
+    const items = [1, 2, 3];
+    const user = {creditcard: null, address: true};
+    return <ShoppingCart items={items} user={user}></ShoppingCart>
+  }
+}
+
+export default App;
+
+Repository: rq03-cart-multi
+$ npx create-react-app rq03-cart-multi --template rq03-cart-multi
+https://rq2e.com/rq03-cart-multi
+Cách làm này hoạt động giống như trước đó với độ phức tạp hoàn toàn giống nhau, nhưng mỗi thành phần đơn giản hơn nhiều và bạn có thể dễ dàng hiểu từng thành phần khi đọc mã. Bạn thậm chí có thể tiến xa hơn bằng cách chia thành phần <User-Buttons> thành hai phần cho tình huống "có thẻ tín dụng" và "không có thẻ tín dụng".
+Tất nhiên, chúng ta phải nhận thức rằng nhiều thành phần đồng nghĩa với nhiều mã nguồn, và nhiều mã nguồn có nghĩa là tăng cường bộ nhớ và sử dụng CPU hơn (nói chung). Do đó, ví dụ sau này này có chút chiếm tài nguyên hơn so với ví dụ trước. Tuy nhiên, trong hầu hết các ứng dụng, sự khác biệt này thường là không đáng kể, và chất lượng mã thường có ưu tiên hơn những tối ưu hóa nhỏ như vậy.
+3.2.7 Comments in JSX
+Vì JSX được viết bên trong JavaScript, bạn có thể sử dụng các comment thông thường của JavaScript bên ngoài các phần tử JSX như bình thường:
+// This is the page title
+const title = <h1>Hello world!</h1>;
+Tuy nhiên, nếu bạn có đoạn mã JSX rất dài, bạn có thể muốn thêm comment bên trong JSX. Trong trường hợp đó, bạn không thể luôn sử dụng comment JavaScript thông thường trực tiếp.
+
+Để thêm comment JSX giữa các thẻ, bạn có thể bọc comment JavaScript chuẩn bằng cặp {} với /**/ hoặc // như sau:
+const content = (
+  <div>
+    {/* Just like a JS comment */}
+    {/* It can also span
+       multiple lines */}
+    {// Single line comments are possible too
+    }
+  </div>
+);
+Bạn cũng có thể sử dụng comment JavaScript trực tiếp bằng cách sử dụng /**/ hoặc // bên trong thẻ:
+const content = (
+  <div>
+    <input
+      /* This element is
+         rendered because... */
+      name={this.props.name} // Some important comment here
+    />
+  </div>
+);  
+Lưu ý rằng khi bạn sử dụng comment thông thường trên một dòng giữa các thẻ bên trong dấu ngoặc nhọn, bạn cần có một ký tự xuống dòng trước khi kết thúc dấu ngoặc nhọn. Đoạn mã sau sẽ không hoạt động:
+
+
+
+const content = (
+  <div>
+    {// This does NOT work! }
+  </div>
+);
+Điều này sẽ dẫn đến một lỗi biên dịch vì dấu ngoặc nhọn kết thúc được coi là một phần của comment, nên dấu ngoặc nhọn mở không có dấu ngoặc nhọn kết thúc tương ứng, gây ra lỗi cú pháp.
+3.2.8 Lists of JSX objects
+
+Một chiến thuật phổ biến trong các React elements là ánh xạ một mảng các elements thành một mảng các đối tượng JSX để trả về trong một component. Hãy nói chúng ta muốn tạo một thành phần để hiển thị một danh sách thả xuống. Chúng ta muốn truyền list of options trong danh sách thả xuống dưới dạng một mảng chuỗi cho một thành phần <Select /> mới. Chúng ta muốn có khả năng thực hiện điều sau trong ứng dụng của chúng ta:
+class App extends Component {
+  render() {
+    const items = ['apples', 'pears', 'playstations'];
+    return <Select items={items} />;
+  }
+}
+Sau đó, Select component của chúng ta nên đúng cách hiển thị một <select> với các phần tử <option> trong HTML. Chúng ta sẽ làm điều đó như thế nào? Cách ngây thơ nhất là đơn giản ánh xạ các phần tử từ chuỗi thành đối tượng JSX bằng cách sử dụng declarative programming, như thể hiện trong đoạn mã tiếp theo.
+Listing 3.10 Naive implementation of select
+
+import { Component } from "react";
+
+class App extends Component {
+  render() {
+    const items = ["apples", "pears", "playstations"];
+    return <Select items={items} />;
+  }
+}
+
+class Select extends Component {
+  render() {
+    return (
+      <select>
+        {this.props.items.map((item) => (
+           <option>{item}</option>
+        ))}
+      </select>
+    );
+  }
+}
+export default App;
+
+
+
+Repository: rq03-naive-select
+$ npx create-react-app rq03-naive-select --template rq03-naive-select
+https://rq2e.com/rq03-naive-select
+Đây là một cố gắng khá tốt để giải quyết vấn đề này. Tuy nhiên, nếu chúng ta chạy mã này trong trình duyệt, chúng ta sẽ nhận được một cảnh báo:
+"Warning: Each child in a list should have a unique 'key' prop."
+Ứng dụng vẫn hoạt động, nhưng chúng ta nhận được cảnh báo về việc thiếu thuộc tính key. Việc sử dụng thuộc tính key là một chút phức tạp ở giai đoạn này trong quá trình học React của chúng ta, nhưng nó được React sử dụng để theo dõi track xem cùng một element có di chuyển trong DOM được hiển thị hay không. Nếu cùng một element moves around, React sẽ tái sử dụng cùng một phần tử, nhưng nếu React không biết liệu đó có phải là cùng một phần tử hay không, React sẽ xóa tất cả các phần tử cũ và tạo ra hoàn toàn các phần tử mới mỗi khi danh sách render.
+
+Đối với mục đích của ví dụ này, chúng ta có thể sử dụng giá trị của item như là key property trên phần tử gốc được trả về bên trong mảng được ánh xạ. Điều này dẫn đến mã nguồn như được thể hiện trong đoạn mã tiếp theo.
+
+Listing 3.11 Correct implementation of select
+import { Component } from "react";
+
+class App extends Component {
+  render() {
+    const items = ["apples", "pears", "playstations"];
+    return <Select items={items}></Select>
+  }
+}
+
+class Select extends Component {
+  render() {
+    return (
+      <select>
+        {this.props.items.map((item) => (
+          <option key={item}>{item}</option>
+        ))}
+      </select>
+    );
+  }
+}
+
+export default App;
+Thuộc tính "key" là một thuộc tính nội bộ của React và sẽ không bao giờ được hiển thị trên DOM. Được khuyến nghị rằng thuộc tính "key" nên là một định danh duy nhất cho phần tử cụ thể đó, không chỉ là chỉ số của phần tử trong mảng (nếu các phần tử di chuyển trong mảng, các chỉ số thay đổi mặc dù các phần tử không thay đổi, nên việc tái sử dụng phần tử đúng cách bị đánh lừa).
+Các key phải là duy nhất. Nếu bạn hiển thị một danh sách với các key không duy nhất, bạn sẽ nhận được một cảnh báo khác trong console về sự trùng lặp của các khóa.
+LƯU Ý: Các key chỉ địa phương trong mảng cụ thể, vì vậy chúng chỉ cần phải là duy nhất trong từng mảng, không cần thiết phải duy nhất giữa tất cả các mảng trong ứng dụng hoặc thậm chí là giữa các thành phần. Các mảng khác nhau của các đối tượng JSX có thể có các khóa trùng lặp giữa chúng miễn là không có mảng nào có các khóa trùng lặp bên trong nó.
+
+Như đã đề cập, đây là một tính năng của React khá phức tạp để hiểu ở giai đoạn này, vì vậy, tạm thời, chỉ cần biết rằng nếu bạn nhận được một cảnh báo trong console về việc thiếu thuộc tính "key" hoặc khóa trùng lặp, đó là nguyên nhân.
+3.2.9 Fragments in JSX
+Chúng ta đã đề cập đến JSX fragments một vài lần rồi. Chúng được sử dụng để xuất nhiều phần tử cùng mức độ trong tình huống chỉ cho phép một phần tử duy nhất. Trước đó, chúng ta đã thực hiện một điều tương tự để bao gồm cả tiêu đề và một liên kết:
+import { Fragment } from 'react';
+...
+return (
+  <Fragment>
+    <h1>Hello and welcome</h1>
+    <a href="/blog">Go to the blog</a>
+  </Fragment>
+);
+Tuy nhiên, từ React 16.2 (và Babel 7) trở đi, một cú pháp ngắn hơn cũng được cho phép. Bây giờ
+bạn thậm chí không cần phải nhập Fragment component:
+return (
+<> 
+  <h1>Hello and welcome</h1>
+  <a href="/blog">Go to the blog</a>
+</>
+);
+
+Cú pháp ngắn này sử dụng một thẻ trống rỗng để render fragments. Tuy nhiên, cú pháp này với `<></>` không thể chứa bất kỳ thuộc tính hoặc thuộc tính nào. Thuộc tính duy nhất bạn có thể muốn áp dụng cho nó có thể là key vì bạn đang render một danh sách các phần tử, mỗi phần tử có nhiều hơn một phần tử JSX duy nhất ở mức gốc.
+Một tình huống cổ điển cho điều này là một danh sách định nghĩa. Nó được định nghĩa trong HTML như sau:
+<dl>
+  <dt>Term A</dt>
+  <dd>Description of Term A.</dd>
+  <dt>Term B</dt>
+  <dd>Description of Term B.</dd>
+</dl> 
+Như bạn có thể thấy, mỗi mục yêu cầu hai phần tử anh em trong danh sách để render (<dt> và <dd>).
+Ví dụ, nếu chúng ta tạo một ứng dụng để render ba giống chó với mô tả ngắn về mỗi giống, chúng ta cần ánh xạ tên và định nghĩa của giống chó của mình vào hai phần tử. Chúng ta làm điều đó bằng cách bao quanh chúng bằng một đoạn văn, nhưng vì chúng ta cần đoạn văn có thuộc tính key, chúng ta phải sử dụng literal Fragment component, và, thật không may, không thể sử dụng cú pháp ngắn đã đề cập trước đó. Hãy thực hiện điều này trong đoạn mã dưới đây.
+
+
+Listing 3.12 Definition list of dog breeds
+import { Component, Fragment } from "react";
+
+class App extends Component {
+  render() {
+    const list = [
+      { breed: "Chihuahua", description: "Small breed of dog."},
+      { breed: "Corgi", description: "Cute breed of dog." },
+      { breed: "Cumberland Sheepdog", description: "Extinct breed of dog."},
+    ];
+    return <Breeds list={list}></Breeds>
+  }
+}
+
+class Breeds extends Component {
+  render() {
+    return (
+      <dl>
+        {this.props.list.map(
+          ({breed, description}) => (
+            <Fragment key={breed}>
+              <dt>{breed}</dt>
+              <dt>{description}</dt>
+            </Fragment>
+          ))
+        }
+      </dl>
+    );
+  }
+}
+
+export default App;
+
+Repository: rq03-dog-breeds
+$ npx create-react-app rq03-dog-breeds --template rq03-dog-breeds
+https://rq2e.com/rq03-dog-breeds
+
+Nếu chúng ta chạy điều này trong trình duyệt, chúng ta sẽ có một danh sách định nghĩa đẹp đúng như chúng ta muốn, như bạn có thể thấy trong hình 3.4. Việc sử dụng các đoạn văn với khóa không phải là một trường hợp ngoại lệ như có vẻ, vì vậy điều này rất hữu ích để biết ngay từ giai đoạn này.’
+ 
+Bây giờ bạn đã trải qua JSX và những lợi ích của nó. Phần còn lại của chương này được dành cho các công cụ JSX và những cạm bẫy tiềm ẩn cần tránh - đúng vậy: công cụ tools và điều cần lưu ý gotchas.
+Trước khi chúng ta tiếp tục, bạn phải hiểu rằng để bất kỳ dự án JSX nào hoạt động đúng cách, JSX cần được biên dịch. Trình duyệt không thể chạy JSX trực tiếp - chúng chỉ có thể chạy JavaScript. Vì vậy, bạn cần lấy mã JSX và biên dịch nó thành JavaScript thông thường (xem hình 3.1). May mắn thay, nhiệm vụ đó không phức tạp như nó nghe có vẻ.
+3.3 How to transpile JSX
+Đối với tất cả các dự án và ví dụ trong cuốn sách này, bạn không cần thiết lập trình biên dịch riêng của mình (hoặc hầu hết các phần khác trong ngăn xếp công nghệ của bạn). Điều tương tự cũng đúng đối với hầu hết các dự án mà bạn sẽ gặp ngoài thực tế, vì các dự án hiện tại đã có một đường ống làm việc, và các dự án mới có thể dựa trên tài liệu thực hành tốt nhất được cung cấp bởi bất kỳ framework nào mà bạn muốn làm việc.
+Tuy nhiên, nếu bạn muốn thiết lập một dự án React từ đầu, bạn có thể làm điều đó và điều đó bao gồm việc thiết lập một trình biên dịch JSX. Công cụ phổ biến nhất để biên dịch JSX là Babel, nhưng cũng có các lựa chọn khác mà bạn có thể muốn xem xét. Một số lựa chọn có thể là một phần của một gói công cụ xây dựng lớn hơn giúp việc thiết lập của bạn dễ dàng hơn hoặc đơn giản là thay thế thả vào cho Babel. Các lựa chọn khác bao gồm SWC, Sucrase và esbuild. Vui lòng tham khảo tài liệu của họ để biết chi tiết về cách sử dụng:
+
+- Babel: https://babeljs.io/
+- SWC: https://swc.rs/
+- Sucrase: https://sucrase.io/
+- esbuild: https://esbuild.github.io/
+
+Chúng tôi mạnh mẽ khuyến khích bạn không nên dành quá nhiều thời gian để tạo ra một cấu hình trình biên dịch JSX cho riêng bạn. Những người tận tâm tại React đã tạo ra CRA (Create React App) cho chúng ta, nó sẽ phục vụ hầu hết các nhu cầu của chúng ta trong cuốn sách này. Bạn có thể muốn tìm hiểu về các thiết lập tùy chỉnh trong các dự án của bạn, nhưng đối với cuốn sách này, bạn sẽ được bảo vệ bởi các cài đặt được cung cấp bởi bộ công cụ tuyển chọn của chúng tôi.
+3.4 React and JSX gotchas
+Phần này bao gồm một số trường hợp ngoại lệ và điều kỳ cục mà bạn nên biết khi sử dụng JSX:
+ **Self-closing tags là bắt buộc cho các leaf nodes.**
+// Đúng
+<img src="image.jpg" alt="Description" />
+// Sai
+<img src="image.jpg" alt="Description"></img>
+
+ **Các ký tự đặc biệt được viết theo literally.**
+// Đúng
+<p>This is &lt;div&gt; element.</p>
+// Sai
+<p>This is <div> element.</p>
+
+ **Chuyển đổi chuỗi có chút đặc biệt.**
+
+ **Thuộc tính style là một đối tượng.**
+// Đúng
+<div style={{ color: 'red', fontSize: '16px' }}>Styled text</div>
+// Sai
+<div style="color: red; font-size: 16px;">Styled text</div>
+
+**Một số thuộc tính có tên dự trữ reserved names và phải được đổi tên.**
+// Đúng
+<label htmlFor="inputField">Username:</label>
+// Sai
+<label for="inputField">Username:</label>
+
+ **Các thuộc tính nhiều từ được viết theo kiểu camelCase.**
+// Đúng
+<div className="containerBox">Content</div>
+// Sai
+<div class="containerBox">Content</div>
+
+ **Thuộc tính boolean được xử lý khác so với trong HTML.**
+// Đúng
+<input type="text" disabled={true} />
+// Sai
+<input type="text" disabled />
+
+ **Một số khoảng trắng bị thu gọn (nhưng không phải tất cả).**
+// Đúng
+<div>  This text has intentional spaces.  </div>
+// Sai
+<div>This text has intentional spaces.</div>
+
+ **Bạn có thể thêm các thuộc tính data- theo ý muốn.**
+// Đúng
+<div data-customAttribute="value">Content</div>
+// Sai
+<div customAttribute="value">Content</div>
+3.4.1 Self-closing elements
+
+JSX yêu cầu bạn phải có dấu gạch chéo (/) đóng ở cuối thẻ đóng closing tag hoặc, nếu bạn không có bất kỳ children nào, ở cuối thẻ đơn đó. Ví dụ, đây là cách đúng:
+<a href="//react.dev">React</a>
+<img src="/logo.png" alt="Logo" />
+
+Còn đoạn mã sau đây là không đúng, vì cả hai node đều thiếu thẻ đóng:
+<a href="//react.dev">React
+<img src="/logo.png" alt="Logo">
+
+Bạn có thể biết rằng HTML linh hoạt hơn. Trình duyệt sẽ bỏ qua dấu gạch chéo (/) hoặc phần kết thúc thiếu và vẫn hiển thị phần tử mà không có vấn đề gì. Hãy thử tạo một tệp HTML chỉ với `<button>Press me` và kiểm tra xem nút vẫn hiển thị đúng không!
+
+3.4.2 Special characters
+Các thực thể HTML là mã mà hiển thị các ký tự đặc biệt như ký hiệu bản quyền, dấu gạch dài, dấu ngoặc kép, và nhiều thứ khác. Dưới đây là một số ví dụ:
+&copy;
+&mdash;
+&ldquo;
+
+Bạn có thể hiển thị các mã này như bất kỳ chuỗi nào trong nội dung văn bản bên trong một node hoặc như một attribute của một node. Ví dụ, đây là JSX tĩnh (văn bản được defined trong mã mà không có biến hoặc thuộc tính):
+<span>&copy;&mdash;&ldquo;</span>
+<input value="&copy;&mdash;&ldquo;" />
+
+Nhưng nếu bạn muốn dynamically output các thực thể HTML (từ một variable hoặc một property), bạn chỉ nhận được đầu ra trực tiếp (tức là `&copy;&mdash;&ldquo;`), không phải là các ký tự đặc biệt. Do đó, đoạn mã sau đây sẽ không hoạt động:
+
+// Anti-pattern. Will NOT work!
+const specialChars = '&copy;&mdash;&ldquo;'
+<span>{specialChars}</span>
+<input value={specialChars}/>
+React/JSX sẽ tự động thoát HTML nguy hiểm, điều này là thuận tiện về mặt bảo mật (mặc định an toàn!). Để xuất các ký tự đặc biệt, bạn cần sử dụng một trong những phương pháp sau đây:
+
+- Sao chép ký tự đặc biệt trực tiếp vào mã nguồn của bạn. Chỉ cần đảm bảo bạn sử dụng bảng mã UTF-8. Đây là phương pháp được khuyến khích để xử lý các ký tự đặc biệt.
+- Thoát ký tự đặc biệt bằng \u và sử dụng số Unicode của nó (sử dụng một trang web như fileformat.info để tra cứu).
+- Chuyển đổi từ mã ký tự thành số ký tự với String.fromCharCode(charCodeNumber).
+- Sử dụng thuộc tính đặc biệt dangerouslySetInnerHTML để đặt HTML bên trong (điều này nguy hiểm và không được khuyến khích).
+Để minh họa phương pháp cuối cùng (như một phương pháp dự phòng - khi mọi thứ đều thất bại trên tàu Titanic, hãy chạy đến thuyền!), xem xét đoạn mã sau:
+
+const specialChars = '&copy;&mdash;&ldquo;';
+<span dangerouslySetInnerHTML={{__html: specialChars}} />
+
+Rõ ràng, đội ngũ React có tính hài hước khi đặt tên một thuộc tính là dangerouslySetInnerHTML.
+
+3.4.3 String conversion
+
+Khi React xuất outputs giá trị của variable hoặc biểu thức của bạn, nó sẽ được hiển thị như thế nào? Nó chỉ có thể hiển thị dưới dạng một trong hai điều: hoặc là một chuỗi, trở thành nội dung chuỗi giữa các phần tử, hoặc là một phần tử, sau đó chỉ trở thành một phần tử như nếu nó được hiển thị trực tiếp. Nhưng làm thế nào "các thứ" được chuyển đổi thành chuỗi nếu chúng không phải là một phần tử? Tốt, React ở đây có chút đặc biệt vì nó phụ thuộc vào loại biểu thức bạn đang hiển thị. Hãy nhìn vào bảng 3.2 để hiểu các khả năng cho các giá trị nguyên thủy khác nhau trong JavaScript.
+Table 3.2 React rendering different types
+
+"string": "string"
+"": ""
+3.4: "3.4"
+0: "0"
+NaN: "NaN"
+Number.POSITIVE_INFINITY: "Infinity"
+Number.NEGATIVE_INFINITY: "-Infinity"
+true: "true"
+false: ""
+undefined: ""
+null: ""
+Có một vài điều bất ngờ ở đó. Quan trọng nhất, giá trị false trở thành chuỗi rỗng, nhưng giá trị true trở thành "true". Do đó, bốn giá trị falsy (chuỗi rỗng, false, null và undefined) đều trở thành chuỗi rỗng.
+Nhưng còn về 0, cũng là giá trị falsy? Thì nó trở thành 0. Điều này sẽ là kỳ lạ nếu bạn không thể render một 0 trong các components của bạn, vì vậy điều này là cần thiết. Cuối cùng, NaN cũng chỉ là "NaN", không phải là chuỗi rỗng. Điều này giúp bạn dễ dàng gỡ lỗi tính toán của mình hơn - nếu bạn thấy một NaN, bạn biết bạn đã mắc lỗi ở đâu đó, nhưng nếu bạn chỉ thấy không có gì, bạn có thể không tìm thấy nó nhanh chóng.
+
+Sự thực này - rằng false không hiển thị gì cả, nhưng 0 hiển thị một cái gì đó - quan trọng đặc biệt khi sử dụng toán tử AND logic để hiển thị các phần tử tùy chọn như chúng ta đã thảo luận trước đó. Bạn có thể quen với cách làm như sau trong JavaScript:
+if (items.length) {
+  hasItems = true;
+}
+Ở đây, chúng ta chỉ sử dụng `items.length` làm điều kiện cho câu lệnh if vì chúng ta biết rằng 0 là falsy, vì vậy chúng ta không cần nói `items.length > 0` - giá trị đúng của câu lệnh là giống nhau.
+
+Tuy nhiên, bạn không nên làm điều này trong JSX. Giả sử bạn muốn hiển thị một nút Checkout trong giỏ hàng của bạn nếu nó chứa ít nhất một sản phẩm, nhưng bạn muốn không hiển thị gì khi giỏ hàng không có sản phẩm:
+class ShoppingCart extends Component {
+  render() {
+      return (
+          <aside>
+              <h1>Shopping cart</h1>
+              <CartItems items={this.props.items} />
+              {this.props.items.length && (
+                  <button>Checkout</button>
+              )}
+          </aside>
+      );
+  }
+
+
+Điều này hoạt động miễn là có nhiều hơn 0 sản phẩm trong giỏ hàng. Nhưng điều gì sẽ xảy ra khi không có sản phẩm nào? Biểu thức AND logic được đánh dấu trong chú thích sẽ ngắn mạch và trả về giá trị falsy đầu tiên. Thêm vào đó, vì độ dài của mảng là 0, giá trị kết quả của biểu thức là đột ngột là 0, mà hiển thị là "0" trong tài liệu, như đã hiển thị trước đó trong bảng 3.2. Do đó, nếu bạn sử dụng mã chỉ định, giỏ hàng mua sắm trống rỗng của bạn sẽ đột ngột hiển thị một "0" ở dưới cùng của thành phần, làm mọi người nhầm lẫn.
+
+Để triển khai đúng, luôn so sánh độ dài của mảng với 0 để đảm bảo kiểu là Boolean. Hơn nữa, bạn có thể lưu trữ so sánh đó trong một biến khác, làm mã trở nên đơn giản hơn để đọc:
+class ShoppingCart extends Component {
+  render() {
+    const hasItems = this.props.items.length > 0;
+    return (
+      <aside>
+        <h1>Shopping cart</h1>
+        <CartItems items={this.props.items} />
+        {hasItems && <button>Checkout</button>}
+      </aside>
+    );
+  }
+}
+
+Không phải là hiếm khi quên điều này khi bạn đang phát triển, vì vậy việc phát hiện ra những số 0 lạ trong ứng dụng của bạn là hoàn toàn có thể. Chúng thường xuyên là kết quả của loại biểu thức này.
+
+3.4.4 The style attribute
+
+Thuộc tính style trong JSX hoạt động khác biệt so với HTML thông thường. Trong JSX, thay vì một chuỗi, bạn cần truyền một JavaScript object và các thuộc tính CSS cần được viết theo kiểu camelCase. Ví dụ:
+- `background-image` trở thành `backgroundImage`.
+- `font-size` trở thành `fontSize`.
+- `font-family` trở thành `fontFamily`.
+Bạn có thể lưu đối tượng JavaScript trong một var hoặc hiển thị nó trực tiếp với cặp dấu ngoặc nhọn kép (`{{...}}`). Dấu ngoặc nhọn kép là cần thiết vì một bộ là cho JSX và bộ kia là cho đối tượng chữ ký JavaScript.
+Giả sử bạn có một đối tượng với kích thước phông chữ như sau:
+const smallFontSize = { fontSize: '10pt' };
+
+Trong JSX của bạn, bạn có thể sử dụng đối tượng `smallFontSize` như sau:
+<input style={smallFontSize} />
+
+Hoặc bạn có thể chọn một kích thước phông chữ lớn hơn (30 point) bằng cách truyền giá trị trực tiếp mà không cần một biến phụ trợ:
+<input style={{ fontSize: '30pt' }} />
+
+Hãy xem một ví dụ khác về việc truyền các kiểu trực tiếp. Lần này, bạn đang thiết lập một đường viền đỏ cho một `<span>`:
+
+<span style={{
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: 'red',
+}}>Bánh red velvet thật ngon</span>
+
+Hoặc giá trị đường viền sau cũng sẽ hoạt động và thực hiện cùng một công việc:
+<span style={{ border: '1px red solid' }}>Hey</span>
+Lý do chính làm sao các kiểu không phải là chuỗi CSS mà là đối tượng JavaScript là để React có thể làm việc với chúng nhanh chóng khi áp dụng các thay đổi cho các hiển thị.
+
+3.4.5 Reserved names: class and for
+
+3.4.6 Multiword attributes
+
+Trong cùng tinh thần như hai tên đã được đề cập trong phần trước, một số thuộc tính HTML khác cũng được đổi tên trong React. Một số thuộc tính có ý nghĩa, nhưng một số khác thì không.
+Bất kỳ thuộc tính nào được tạo từ hơn một từ tiếng Anh đều được đổi tên theo kiểu camelCase. Điều này hợp lý cho các thuộc tính scalable vector graphics (SVG) sử dụng dấu gạch ngang như clip-path hoặc fill-opacity. Chúng ta không thể sử dụng các thuộc tính có dấu gạch ngang trực tiếp trong JSX, nên chúng được đổi tên thành clipPath và fillOpacity tương ứng.
+Tuy nhiên, điều tương tự cũng áp dụng cho các thuộc tính HTML không sử dụng dấu gạch ngang nhưng thường được viết thường, điều này có thể gây nhầm lẫn. Nếu bạn nhập:
+return <video autoplay>...</video>;
+Trong JSX, điều này sẽ không hoạt động vì, trong khi thuộc tính được gọi là autoplay (và có thể là chữ thường trong HTML), bạn phải sử dụng kiểu camelCase và gọi nó là autoPlay trong React. Điều này có thể gây khá nhiều khó chịu. Điều này cũng áp dụng cho một số lượng lớn các thuộc tính mà bạn thường xuyên sử dụng trong HTML.
+Thay vì cảnh báo bạn về việc bỏ qua các thuộc tính này, React chỉ đơn giản lọc chúng một cách yên tĩnh. Do đó, bạn có thể không bao giờ biết rằng bạn đã nhập sai cho đến khi bạn nhận ra rằng video của bạn không tự động phát (vì autoPlay thay vì autoplay), iframe của bạn không cho phép chế độ toàn màn hình (vì allowFullscreen thay vì allowfullscreen), hoặc trường nhập của bạn không có giới hạn số ký tự được phép (vì max-Length thay vì maxlength).
+3.4.7 Boolean attribute values
+
+Một số thuộc tính (ví dụ: disabled, required, checked, autoFocus và readOnly) chỉ đặc biệt dành cho các phần tử form. Điều quan trọng nhất cần nhớ ở đây là giá trị thuộc tính phải được đặt là một biểu thức JavaScript (tức là bên trong {}) và không được đặt là một chuỗi. Ví dụ, sử dụng {false} để bật chế độ disabled cho ô nhập liệu:
+
+<input disabled={false} />
+
+Nhưng đừng sử dụng giá trị "false" vì nó sẽ qua kiểm tra truthy (một chuỗi không rỗng là truthy trong JavaScript, như bạn hy vọng nhớ từ phần 3.2.6). Điều này là do chuỗi "false" không phải là một trong sáu giá trị falsy; nó thực sự là một chuỗi không rỗng, nó là truthy và dẫn đến giá trị true. React sẽ hiển thị ô nhập liệu như đã bị vô hiệu hóa (disabled sẽ được đặt là true):
+<input disabled="false" /> // Không làm như thế này!
+Nếu bạn bỏ qua giá trị sau một thuộc tính, React sẽ đặt giá trị là true:
+<input required />
+
+Điều này tương đương với việc thiết lập giá trị thành true một cách thủ công, vì vậy chỉ cần sử dụng mã trước đó thay vì sử dụng required={true}.
+
+Đối với nhiều thuộc tính trong HTML, việc loại bỏ hoàn toàn giá trị có nghĩa là đặt giá trị là false, vì vậy nếu bạn muốn đặt một giá trị cụ thể là true hoặc false, chỉ cần bao gồm nó mà không có giá trị hoặc bỏ qua nó. Nếu bạn muốn đặt giá trị dựa trên nội dung của một biến, hãy sử dụng một biểu thức:
+<input readOnly={!isEditable} />
+
+Lưu ý về vấn đề với từ ngữ đa từ đã được đề cập trước đó. Thuộc tính Boolean này trong React được gọi là readOnly và không phải là readonly như bạn biết từ HTML.
+
+CUSTOM COMPONENT WITH BOOLEAN PROPERTIES
+Điều tương tự cũng đúng khi bạn tạo các component của riêng mình. Nếu bạn có một custom component và muốn chấp nhận một thuộc tính Boolean, bạn chỉ cần sử dụng một thuộc tính từ this.props như nó là một Boolean, và React sẽ đảm bảo đặt nó thành true nếu được chỉ định khi sử dụng.
+
+Ví dụ, chúng ta có thể tạo một thành phần cảnh báo sẽ hiển thị một thông báo cho người dùng. Thông báo này có thể là lỗi hoặc cảnh báo. Để kiểm soát mức độ của thông báo, chúng ta thêm một cờ Boolean, isError, và nếu là true, chúng ta bao gồm biểu tượng cảnh báo xung quanh thông báo. Sau đó, chúng ta sẽ sử dụng thành phần này để hiển thị hai thông báo khác nhau trong ứng dụng của chúng ta - một làm lỗi và một làm cảnh báo, như được hiển thị trong đoạn mã 3.13.
+
+import { Component } from 'react';
+class Alert extends Component {
+  render() {
+    return (
+      <p>
+        {this.props.isError && '⚠'}
+        {this.props.children}
+        {this.props.isError && '⚠'}
+      </p>
+    );
+  }
+}
+class App extends Component {
+  render() {
+    return (
+     <main>
+        <Alert>We are almost out of cookies</Alert>
+        <Alert isError>
+          We are completely out of ice cream
+        </Alert>
+      </main>
+    );
+  }
+}
+export default App;
+
+Nếu chúng ta chạy điều này trong trình duyệt, chúng ta sẽ thấy cách hai thông báo được hiển thị đúng (xem hình 3.5).
+ 
+
+3.4.8 Whitespace
+
+Nếu bạn muốn thêm khoảng trắng giữa các components - ví dụ, nếu bạn đang thêm một từ in đậm trong một câu - bạn phải rất cẩn trọng về cách bạn đặt ký tự xuống dòng của mình. Hãy nói bạn muốn viết một tiêu đề với một từ được nhấn mạnh ở giữa, ví dụ, "All corgis are awesome " nhưng "corgis" phải được in nghiêng. Bạn có thể làm điều này trong JSX như được hiển thị trong đoạn mã tiếp theo.
+
+Listing 3.14 Naive implementation of a partially emphasized message
+
+import { Component } from 'react';
+class App extends Component {
+  render() {
+    return (
+      <h1>
+        All
+        <em>corgis</em>
+        are awesome
+      </h1>
+    );
+  }
+}
+export default App;
+Repository: rq03-bad-whitespace
+$ npx create-react-app rq03-bad-whitespace --template rq03-bad-whitespace
+https://rq2e.com/rq03-bad-whitespace
+Có vẻ khá hợp lý, phải không? Hãy chạy ứng dụng này với CRA và xem nó trên trình duyệt. Bạn có thể xem kết quả trong hình 3.6.
+
+ 
+
+Điều đó rõ ràng là không đúng. Khoảng trắng xung quanh từ "corgis" đơn giản bị thu gọn. Điều gì đã xảy ra?
+Thường, các ký tự xuống dòng và tab đều bị bỏ qua như là khoảng trắng trong JSX. Khi chúng ta có JSX như
+return (
+  <main>
+    <h1>Hello world</h1>
+  </main>
+);
+ở phần đầu chương, chúng ta thực sự không muốn có khoảng trắng giữa các phần tử `<main>` và `<h1>`. Chúng ta chỉ định dạng nó trên nhiều dòng vì nó trông đẹp - không phải vì chúng ta muốn có nhiều khoảng trắng thừa được hiển thị trong trình duyệt. Vì vậy, nếu có khoảng trắng giữa các phần tử trong JSX bao gồm các ký tự xuống dòng, tất cả các khoảng trắng đó sẽ bị thu gọn. Điều này không quan trọng nếu bạn có một khoảng trắng bình thường thêm vào cuối dòng văn bản thông thường trong đoạn mã 3.14. Nếu có một ký tự xuống dòng giữa các phần tử, tất cả các khoảng trắng sẽ bị thu gọn.
+
+Vậy làm thế nào để làm điều này đúng? Có hai cách để đảm bảo các khoảng trắng được hiển thị:
+- Không sử dụng ký tự xuống dòng giữa các phần tử.
+- Thêm các khoảng trắng như là các biểu thức trong mã.
+Cách thứ hai nghe có vẻ phức tạp và không trông mấy tốt, nhưng có thể cần thiết. Hãy xem xét giải pháp đầu tiên - không có ký tự xuống dòng - trong thực tế.
+Listing 3.15 Partially emphasized message without newline characters
+import { Component } from 'react';
+class App extends Component {
+  render() {
+    return (
+      <h1>
+        All <em>corgis</em> are awesome
+      </h1>
+    );
+  }
+}
+export default App;
+Lưu ý rằng chúng ta có thể có ký tự xuống dòng trước và sau message (vì khoảng trắng ở đây có thể bị thu gọn - chúng ta không quan tâm đến nó). Chúng ta chỉ không muốn có ký tự xuống dòng ở những nơi chúng ta muốn có các ký tự khoảng trắng thực sự được chèn vào. Bây giờ hãy xem xét các biểu thức khoảng trắng trong đoạn mã tiếp theo.
+Listing 3.16 Partially emphasized message with space expressions
+import { Component } from 'react';
+class App extends Component {
+  render() {
+    return (
+      <h1>
+        All
+        {" "}
+        <em>corgis</em>
+        {" "}
+        are awesome
+      </h1>
+    );
+  }
+}
+export default App;
+
+Ở đây, chúng ta thêm các khoảng trắng bằng cách sử dụng {}. Điều này sẽ buộc JSX engine bao gồm các khoảng trắng như là các element thực sự và không xem chúng như là một phần của khoảng trắng không đáng kể mà thường tồn tại giữa các phần tử. Bạn thường sẽ thấy các nhà phát triển thêm các biểu thức khoảng trắng như vậy vào cuối dòng trước ký tự xuống dòng, như được hiển thị ở đây.
+
+3.4.9 data- attributes
+Đôi khi, bạn muốn truyền thêm dữ liệu bằng cách sử dụng các DOM nodes. Mặc dù bạn không nên sử dụng DOM của mình như một cơ sở dữ liệu hoặc local storage, đôi khi điều đó là cần thiết khi bạn muốn truyền biến var cho các thư viện của bên thứ ba. Nếu bạn cần tạo các thuộc tính tùy chỉnh và muốn chúng được hiển thị, hãy sử dụng tiền tố data-.
+
+Ví dụ, đây là một thuộc tính tùy chỉnh hợp lệ với tên data-object-id mà React sẽ hiển thị trong giao diện (HTML sẽ giống như JSX này):
+<li data-object-id={object.id}>...</li>
+3.5 Quiz
+
+1 To output a JavaScript variable in JSX, which of the following do you use? =, <%= %>, {}, or <?= ?>
+2 The class attribute isn’t allowed in JSX. True or false?
+3 The default value for an attribute without a value is false. True or false?
+4 The inline style attribute in JSX is a JavaScript object and not a string like other
+attributes. True or false?
+5 If you need to have if/else logic in JSX, you can use it inside {}. For example,
+class={if (!this.props.isAdmin) return 'hide'} is valid JSX code. True or
+false?
+
+Quiz answers
+1 You use {} for variables and expressions.
+2 True. class is a reserved JavaScript statement. For this reason, you use className in JSX.
+3 False. The default value for a property with no value specified is true.
+4 True. style is an object for performance reasons.
+5 False. First, class isn’t the proper attribute name; it’s className. Then, instead
+of if return (which isn’t valid JavaScript anyway in this context), you should
+use a ternary operator or logical expressions. You could do it like this: className={this.props.isAdmin || 'hide'}.
+
+Summary
+
+- JSX chỉ là syntactic sugar cho các phương thức React như React.createElement.
+- Bạn nên sử dụng className và htmlFor thay vì các thuộc tính class và for tiêu chuẩn của HTML.
+- Thuộc tính style nhận một đối tượng JavaScript, không phải là một chuỗi như trong HTML thông thường.
+- Toán tử ba ngôi và toán tử logic là cách tốt nhất để thực hiện các câu lệnh if/else.
+- Việc output các variable, comments và các ký tự đặc biệt HTML là dễ dàng và trực tiếp.
+- Một số thuộc tính HTML và SVG đa từ được đổi tên trong React, vì vậy hãy chú ý đến những thuộc tính đặc biệt này và nhớ kiểm tra xem liệu các thuộc tính của bạn có được đưa vào tài liệu HTML một cách chính xác hay không.
+- JSX cần được biên dịch thành JavaScript trước khi có thể chạy trong trình duyệt, nhưng bạn hiếm khi phải lo lắng về điều đó. Tuy nhiên, nếu bạn cảm thấy cần thiết, có nhiều công cụ có sẵn, trong đó có Babel, là công cụ phổ biến nhất vào thời điểm viết lời.
+
 
